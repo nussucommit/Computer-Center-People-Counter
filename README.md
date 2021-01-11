@@ -25,3 +25,4 @@ python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt -
 ## Contributing
 
 ## License
+Computer Center People Counter is released under the [MIT License](./LICENSE).
