@@ -7,6 +7,7 @@ from utils import get_x_from_y, get_y_from_x
 import numpy as np
 import argparse
 import imutils
+import math
 import time
 import dlib
 import cv2
@@ -184,14 +185,22 @@ while True:
     # draw a diagonal line in the frame -- once an
     # object crosses this line we will determine whether they were
     # moving 'in' or 'out' of AS8
-    x1, y1 = (0, 0)
-    x2, y2 = (W // 3, H)
     color = (0, 255, 255)
     thickness = 1
+    
+    x1, y1 = (0, 0)  # diagonal line
+    x2, y2 = (W // 3, H)
     cv2.line(frame, (x1, y1), (x2, y2), color, thickness)
 
+    x3, y3 = (0, H // 2 + 10)  # horizontal line
+    x4, y4 = (math.floor(3 / 8 * W), H // 2 + 10)
+    cv2.line(frame, (x3, y3), (x4, y4), color, thickness)
+
+    x5, y5 = (math.floor(3 / 8 * W), H // 2 + 10)  # vertical line
+    x6, y6 = (math.floor(3 / 8 * W), H)
+    cv2.line(frame, (x5, y5), (x6, y6), color, thickness)
+
     # gradient of diagonal line for later use
-    # add -ve because height increases from top to bottom
     height = y2 - y1
     width = x2 - x1
     gradient = height / width 
@@ -223,23 +232,40 @@ while True:
 
             # check to see if the object has been counted or not
             if not to.counted:
-                # if the direction is negative (indicating the object
-                # is moving left) AND the centroid is to the left of the
-                # line, count the object
+                # if the direction is negative (indicating the object is moving left)
+                # AND the centroid is to the left of diagonal line
+                # AND BELOW horizontal line
+                # count the object as going out
                 if direction < 0 and \
                     centroid[1] > get_y_from_x(centroid[0], gradient) and \
-                    centroid[0] < get_x_from_y(centroid[1], gradient):
-                    # centroid[0] < W // 2: 
+                    centroid[0] < get_x_from_y(centroid[1], gradient) and \
+                    centroid[1] > y3:
+
                     totalUp += 1
                     to.counted = True
 
-                # if the direction is positive (indicating the object
-                # is moving right) AND the centroid is to the right of the
-                # line, count the object
+                # if the direction is positive (indicating the object is moving right)
+                # AND the centroid is to the RIGHT of the diagonal line 
+                # AND BELOW horizontal line
+                # AND to the LEFT of vertical line,
+                # count the object as going in
                 if direction > 0 and \
                     centroid[1] < get_y_from_x(centroid[0], gradient) and \
-                    centroid[0] > get_x_from_y(centroid[1], gradient):
-                    # centroid[0] > W // 2:
+                    centroid[0] > get_x_from_y(centroid[1], gradient) and \
+                    centroid[1] > y3 and centroid[0] < x5:
+
+                    totalDown += 1
+                    to.counted = True
+
+                # if the direction is positive (indicating the object is moving right)
+                # AND the centroid is to the LEFT of diagonal line 
+                # AND ABOVE horizontal line,
+                # count the object as going in
+                if direction > 0 and \
+                    centroid[1] > get_y_from_x(centroid[0], gradient) and \
+                    centroid[0] < get_x_from_y(centroid[1], gradient) and \
+                    centroid[1] < y3:
+
                     totalDown += 1
                     to.counted = True
 
@@ -264,7 +290,7 @@ while True:
     # loop over the info tuples and draw them on our frame
     for (i, (k, v)) in enumerate(info):
         text = "{}: {}".format(k, v)
-        cv2.putText(frame, text, (10, H - ((i * 20) + 20)),
+        cv2.putText(frame, text, (320, H - ((i * 20) + 20)),
             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
     # check to see if we should write the frame to disk
