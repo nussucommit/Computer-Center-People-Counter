@@ -187,7 +187,7 @@ while True:
     x1, y1 = (0, 0)
     x2, y2 = (W // 3, H)
     color = (0, 255, 255)
-    thickness = 2
+    thickness = 1
     cv2.line(frame, (x1, y1), (x2, y2), color, thickness)
 
     # gradient of diagonal line for later use
