@@ -1,16 +1,19 @@
 # import the necessary packages
+from datetime import datetime, timedelta
 from pyimagesearch.centroidtracker import CentroidTracker
 from pyimagesearch.trackableobject import TrackableObject
 from imutils.video import VideoStream
 from imutils.video import FPS
 from utils import get_x_from_y, get_y_from_x
 import numpy as np
+import pandas as pd
 import argparse
 import imutils
 import math
 import time
 import dlib
 import cv2
+import os
 
 
 # construct the argument parse and parse the arguments
@@ -23,6 +26,8 @@ ap.add_argument("-i", "--input", type=str,
     help="path to optional input video file")
 ap.add_argument("-o", "--output", type=str,
     help="path to optional output video file")
+ap.add_argument("-oc", "--output-csv", type=str,
+    help="path to optional output csv file")
 ap.add_argument("-c", "--confidence", type=float, default=0.4,
     help="minimum probability to filter weak detections")
 ap.add_argument("-s", "--skip-frames", type=int, default=30,
@@ -75,6 +80,9 @@ trackableObjects = {}
 totalFrames = 0
 totalDown = 0
 totalUp = 0
+
+up_counts = []
+down_counts = []
 
 # start the frames per second throughput estimator
 fps = FPS().start()
@@ -310,6 +318,10 @@ while True:
     totalFrames += 1
     fps.update()
 
+    # add to record
+    up_counts.append(totalUp)
+    down_counts.append(totalDown)
+
 # stop the timer and display FPS information
 fps.stop()
 print("[INFO] elapsed time: {:.2f}".format(fps.elapsed()))
@@ -329,3 +341,35 @@ else:
 
 # close any open windows
 cv2.destroyAllWindows()
+
+
+######################################
+# record number of people each frame #
+######################################
+if args.get("output_csv", False):
+    # seconds per frame
+    spf = timedelta(seconds=1 / fps.fps())
+
+    # get start time from file name
+    if args.get("input", False):
+        input_file = args["input"]
+        bn = os.path.basename(input_file)
+        fn = os.path.splitext(bn)[0]
+        start_time = datetime.strptime(fn.split('_')[1], '%Y%m%d%H%M%S')
+    else:
+        start_time = datetime.now()
+
+    # create timestamp for each frame
+    timestamp_lst = np.array([i * spf for i in range(totalFrames)])
+    timestamp_lst += start_time
+    
+    # create dataframe
+    df = pd.DataFrame({
+        "timestamp": timestamp_lst,
+        "totalOut": up_counts,
+        "totalIn": down_counts
+    })
+
+    df.to_csv(args["output_csv"], index=False)
+
+    print("[INFO] csv successfully created")
