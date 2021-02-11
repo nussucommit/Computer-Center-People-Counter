@@ -15,11 +15,11 @@ Work in progress...
 2. Try the program out with the following command:
 - using web cam:
 ```shell
-python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --output output/<output-video-filename>.avi
+python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --output output/<output-video-filename>1.avi --output-csv output/<output-csv-filename>.csv
 ```
 - using video input:
  ```shell
-python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input <input-video-filename>.mp4 --output output/output_01.avi
+python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/<input-video-filename>.mp4 --output output/<output-video-filename>1.avi --output-csv output/<output-csv-filename>.csv
 ```
 
 ## Contributing
@@ -29,14 +29,9 @@ python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt -
 
 3. Primary results looks pretty promising. Logic goes like this: if u on the left of line and moving left, it classifies as going out and vice versa.
 
-Some observations:
 4. Pros: Works fine, 0 training needed.
 
-5. Cons: Right side of line covers too much space, whoever moves right on the right side of the line automatically gets added to counter. Space on the left side of the line is small, might miss ppl going out.
-
-6. Potential solution: Limit the area observed to a smaller area close to the entrance. Use a curve instead of a straight line to give entrance area more space to sense.
-
-7. Potential improvements: 
+5. Potential improvements: 
 - find a pre-trained model with higher precision
 - fine-tune existing input parameters
 
