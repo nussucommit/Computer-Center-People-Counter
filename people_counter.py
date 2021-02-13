@@ -201,11 +201,11 @@ while True:
     cv2.line(frame, (x1, y1), (x2, y2), color, thickness)
 
     x3, y3 = (0, H // 2 + 10)  # horizontal line
-    x4, y4 = (math.floor(3 / 8 * W), H // 2 + 10)
+    x4, y4 = (int(math.floor(3 / 8 * W)), H // 2 + 10)
     cv2.line(frame, (x3, y3), (x4, y4), color, thickness)
-
-    x5, y5 = (math.floor(3 / 8 * W), H // 2 + 10)  # vertical line
-    x6, y6 = (math.floor(3 / 8 * W), H)
+    
+    x5, y5 = (int(math.floor(3 / 8 * W)), H // 2 + 10)  # vertical line
+    x6, y6 = (int(math.floor(3 / 8 * W)), H)
     cv2.line(frame, (x5, y5), (x6, y6), color, thickness)
 
     # gradient of diagonal line for later use
@@ -342,7 +342,8 @@ else:
 # close any open windows
 cv2.destroyAllWindows()
 
-
+print(x1, x2, x3, x4, x5, x6)
+print(y1, y2, y3, y4, y5, y6)
 ######################################
 # record number of people each frame #
 ######################################
