@@ -15,11 +15,11 @@ Work in progress...
 2. Try the program out with the following command:
 - using web cam:
 ```shell
-python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --output output/<output-video-filename>1.avi --output-csv output/<output-csv-filename>.csv
+python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --output output/<output-video-filename>.avi --output-csv output/<output-csv-filename>.csv
 ```
 - using video input:
  ```shell
-python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/<input-video-filename>.mp4 --output output/<output-video-filename>1.avi --output-csv output/<output-csv-filename>.csv
+python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/<input-video-filename>.mp4 --output output/<output-video-filename>.avi --output-csv output/<output-csv-filename>.csv
 ```
 
 ## Contributing
