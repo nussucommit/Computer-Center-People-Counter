@@ -14,6 +14,7 @@ import time
 import dlib
 import cv2
 import os
+import plotly.express as px
 
 
 # construct the argument parse and parse the arguments
@@ -201,11 +202,12 @@ while True:
     cv2.line(frame, (x1, y1), (x2, y2), color, thickness)
 
     x3, y3 = (0, H // 2 + 10)  # horizontal line
-    x4, y4 = (math.floor(3 / 8 * W), H // 2 + 10)
+    x4, y4 = (int(math.floor(3 / 8 * W)), H // 2 + 10)
     cv2.line(frame, (x3, y3), (x4, y4), color, thickness)
 
-    x5, y5 = (math.floor(3 / 8 * W), H // 2 + 10)  # vertical line
-    x6, y6 = (math.floor(3 / 8 * W), H)
+
+    x5, y5 = (int(math.floor(3 / 8 * W)), H // 2 + 10)  # vertical line
+    x6, y6 = (int(math.floor(3 / 8 * W)), H)
     cv2.line(frame, (x5, y5), (x6, y6), color, thickness)
 
     # gradient of diagonal line for later use
@@ -363,13 +365,33 @@ if args.get("output_csv", False):
     timestamp_lst = np.array([i * spf for i in range(totalFrames)])
     timestamp_lst += start_time
     
+    crowdInsight = map(lambda x, y: x + y, up_counts, down_counts)
+
     # create dataframe
     df = pd.DataFrame({
         "timestamp": timestamp_lst,
         "totalOut": up_counts,
-        "totalIn": down_counts
+        "totalIn": down_counts,
+        "crowdInsight": crowdInsight
     })
 
     df.to_csv(args["output_csv"], index=False)
 
     print("[INFO] csv successfully created")
+
+
+# generating the plots
+inVsTime = px.line(df, x = 'timestamp', y = 'totalIn', title='totalIn Against timestamp')
+inVsTime.show()
+
+outVsTime = px.line(df, x = 'timestamp', y = 'totalOut', title='totalIn Against timestamp')
+outVsTime.show()
+
+crowd = px.line(df, x = 'timestamp', y = 'crowdInsight', title='totalIn Against timestamp')
+crowd.show()
+
+crowd.write_image("Crowd.jpeg")
+inVsTime.write_image("InVsTime.jpeg")
+outVsTime.write_image("OutVsTime.jpeg")
+
+print("Successfully export plots")
