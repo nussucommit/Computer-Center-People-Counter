@@ -345,8 +345,6 @@ else:
 # close any open windows
 cv2.destroyAllWindows()
 
-print(x1, x2, x3, x4, x5, x6)
-print(y1, y2, y3, y4, y5, y6)
 ######################################
 # record number of people each frame #
 ######################################
@@ -384,13 +382,13 @@ if args.get("output_csv", False):
 
 # generating the plots
 inVsTime = px.line(df, x = 'timestamp', y = 'totalIn', title='totalIn Against timestamp')
-inVsTime.show()
+# inVsTime.show()
 
 outVsTime = px.line(df, x = 'timestamp', y = 'totalOut', title='totalIn Against timestamp')
-outVsTime.show()
+# outVsTime.show()
 
 crowd = px.line(df, x = 'timestamp', y = 'crowdInsight', title='totalIn Against timestamp')
-crowd.show()
+# crowd.show()
 
 if args.get("output_plots", False):
 
@@ -398,4 +396,4 @@ if args.get("output_plots", False):
         crowd.write_image(args["output_plots"] + "_crowd.jpeg")
         inVsTime.write_image(args["output_plots"] + "_in_vs_time.jpeg")
         outVsTime.write_image(args["output_plots"] + "_out_vs_time.jpeg")
-        print("Successfully exported plots")
+        print("[INFO] successfully exported plots")
