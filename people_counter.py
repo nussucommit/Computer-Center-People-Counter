@@ -33,6 +33,8 @@ ap.add_argument("-c", "--confidence", type=float, default=0.4,
     help="minimum probability to filter weak detections")
 ap.add_argument("-s", "--skip-frames", type=int, default=30,
     help="# of skip frames between detections")
+ap.add_argument("-op", "--output-plots", type=str,
+    help="path to optional output plot files")
 args = vars(ap.parse_args())
 
 
@@ -390,8 +392,10 @@ outVsTime.show()
 crowd = px.line(df, x = 'timestamp', y = 'crowdInsight', title='totalIn Against timestamp')
 crowd.show()
 
-crowd.write_image("Crowd.jpeg")
-inVsTime.write_image("InVsTime.jpeg")
-outVsTime.write_image("OutVsTime.jpeg")
+if args.get("output_plots", False):
 
-print("Successfully export plots")
+    if args.get("input", False):
+        crowd.write_image(args["output_plots"] + "_crowd.jpeg")
+        inVsTime.write_image(args["output_plots"] + "_in_vs_time.jpeg")
+        outVsTime.write_image(args["output_plots"] + "_out_vs_time.jpeg")
+        print("Successfully exported plots")

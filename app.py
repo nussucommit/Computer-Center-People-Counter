@@ -80,9 +80,9 @@ while True:
             pass
     elif event == "-RUN COUNTER-":
         cliInputStrings = ("python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input ", 
-                          " --output ", ".avi --output-csv ", ".csv")
+                          " --output ", ".avi --output-csv ", ".csv --output-plots ")
         outputPath = os.path.join(outputFolder, outputFileName)
-        finalInput = cliInputStrings[0] + inputPath + cliInputStrings[1] + outputPath + cliInputStrings[2] + outputPath + cliInputStrings[3]
+        finalInput = cliInputStrings[0] + inputPath + cliInputStrings[1] + outputPath + cliInputStrings[2] + outputPath + cliInputStrings[3] + outputPath
         print(finalInput)
         os.system(finalInput) # insert run script here
         sg.Popup("Success!")
