@@ -398,4 +398,4 @@ if args.get("output_plots", False):
         crowd.write_image(args["output_plots"] + "_crowd.jpeg")
         inVsTime.write_image(args["output_plots"] + "_in_vs_time.jpeg")
         outVsTime.write_image(args["output_plots"] + "_out_vs_time.jpeg")
-        print("Successfully exported plots")
+        print("[INFO] successfully exported plots")

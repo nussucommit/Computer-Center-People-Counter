@@ -1,10 +1,10 @@
 import PySimpleGUI as sg
 import os.path
-import ntpath
+import traceback
 
-inputPath = "ch05_20210108093439"
-outputFileName = "ch05_20210108093439"
-outputFolder = "output"
+inputPath = ""
+outputFileName = ""
+outputFolder = ""
 
 # window layout
 file_list_column = [
@@ -73,8 +73,8 @@ while True:
             )
             inputPath = filename
             window["-TOUT-"].update(filename)
-            head, tail = ntpath.split(filename)
-            outputFileName = tail.substring(str.length() - 4) or ntpath.basename(head).substring(str.length() - 4)
+            basename = os.path.basename(filename)
+            outputFileName = os.path.splitext(basename)[0]
 
         except:
             pass
@@ -84,7 +84,11 @@ while True:
         outputPath = os.path.join(outputFolder, outputFileName)
         finalInput = cliInputStrings[0] + inputPath + cliInputStrings[1] + outputPath + cliInputStrings[2] + outputPath + cliInputStrings[3] + outputPath
         print(finalInput)
-        os.system(finalInput) # insert run script here
+        try:
+            os.system(finalInput) # insert run script here
+        except Exception as e:
+            tb = traceback.format_exc()
+            sg.Print(f'An error happened.  Here is the info:', e, tb)
         sg.Popup("Success!")
 
 window.close()
