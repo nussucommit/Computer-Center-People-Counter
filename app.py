@@ -101,6 +101,9 @@ while True:
             if output_folder == DEFAULT_OUTPUT_FOLDER:
                 if not os.path.exists(DEFAULT_OUTPUT_FOLDER):
                     os.mkdir(DEFAULT_OUTPUT_FOLDER)
+            output_folder = os.path.join(output_folder, output_path_name)
+            print(output_folder)
+            os.mkdir(output_folder)
             cli_input_strings = ("python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input ", 
                             " --output ", ".avi --output-csv ", ".csv --output-plots ")
             output_path = os.path.join(output_folder, output_path_name)
