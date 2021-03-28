@@ -19,11 +19,11 @@ python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt -
 ```
 - using video input:
  ```shell
-python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/<video-filename>.mp4 --output output/<video-filename>.avi --confidence 0.4 --skip-frames <frames-to-skip> --output-csv output/<video-filename>.csv --output-plots <video-filename>
+python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/<video-filename>.mp4 --output output/<video-filename>.avi --confidence 0.4 --skip-frames <frames-to-skip> --output-csv output/<video-filename>.csv --output-plots output/<video-filename>
 ```
 - example using video input:
 ```
-python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/ch05_20201211120000.mp4 --output output/ch05_20201211120000.avi --confidence 0.4 --skip-frames 60 --output-csv output/ch05_20201211120000.csv --output-plots ch05_20201211120000
+python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/ch05_20201211120000.mp4 --output output/ch05_20201211120000.avi --confidence 0.4 --skip-frames 60 --output-csv output/ch05_20201211120000.csv --output-plots output/ch05_20201211120000
 ```
 
 ## Contributing
