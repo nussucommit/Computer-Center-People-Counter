@@ -14,6 +14,7 @@ import time
 import dlib
 import cv2
 import os
+import plotly.express as px
 
 
 # construct the argument parse and parse the arguments
@@ -26,12 +27,14 @@ ap.add_argument("-i", "--input", type=str,
     help="path to optional input video file")
 ap.add_argument("-o", "--output", type=str,
     help="path to optional output video file")
-ap.add_argument("-oc", "--output-csv", type=str,
-    help="path to optional output csv file")
 ap.add_argument("-c", "--confidence", type=float, default=0.4,
     help="minimum probability to filter weak detections")
 ap.add_argument("-s", "--skip-frames", type=int, default=30,
     help="# of skip frames between detections")
+ap.add_argument("-oc", "--output-csv", type=str,
+    help="path to optional output csv file")
+ap.add_argument("-op", "--output-plots", type=str,
+    help="path to optional output plot files")
 args = vars(ap.parse_args())
 
 
@@ -203,7 +206,7 @@ while True:
     x3, y3 = (0, H // 2 + 10)  # horizontal line
     x4, y4 = (int(math.floor(3 / 8 * W)), H // 2 + 10)
     cv2.line(frame, (x3, y3), (x4, y4), color, thickness)
-    
+
     x5, y5 = (int(math.floor(3 / 8 * W)), H // 2 + 10)  # vertical line
     x6, y6 = (int(math.floor(3 / 8 * W)), H)
     cv2.line(frame, (x5, y5), (x6, y6), color, thickness)
@@ -342,8 +345,6 @@ else:
 # close any open windows
 cv2.destroyAllWindows()
 
-print(x1, x2, x3, x4, x5, x6)
-print(y1, y2, y3, y4, y5, y6)
 ######################################
 # record number of people each frame #
 ######################################
@@ -364,13 +365,33 @@ if args.get("output_csv", False):
     timestamp_lst = np.array([i * spf for i in range(totalFrames)])
     timestamp_lst += start_time
     
+    crowdInsight = map(lambda x, y: x + y, up_counts, down_counts)
+
     # create dataframe
     df = pd.DataFrame({
         "timestamp": timestamp_lst,
         "totalOut": up_counts,
-        "totalIn": down_counts
+        "totalIn": down_counts,
+        "crowdInsight": crowdInsight
     })
 
     df.to_csv(args["output_csv"], index=False)
 
     print("[INFO] csv successfully created")
+
+
+# generating the plots
+inVsTime = px.line(df, x = 'timestamp', y = 'totalIn', title='totalIn Against timestamp')
+# inVsTime.show()
+
+outVsTime = px.line(df, x = 'timestamp', y = 'totalOut', title='totalIn Against timestamp')
+# outVsTime.show()
+
+crowd = px.line(df, x = 'timestamp', y = 'crowdInsight', title='totalIn Against timestamp')
+# crowd.show()
+
+if args.get("output_plots", False) and args.get("input", False):
+    crowd.write_image(args["output_plots"] + "_crowd.jpeg")
+    inVsTime.write_image(args["output_plots"] + "_in_vs_time.jpeg")
+    outVsTime.write_image(args["output_plots"] + "_out_vs_time.jpeg")
+    print("[INFO] successfully exported plots")
