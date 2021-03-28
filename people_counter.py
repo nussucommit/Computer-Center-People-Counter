@@ -27,12 +27,12 @@ ap.add_argument("-i", "--input", type=str,
     help="path to optional input video file")
 ap.add_argument("-o", "--output", type=str,
     help="path to optional output video file")
-ap.add_argument("-oc", "--output-csv", type=str,
-    help="path to optional output csv file")
 ap.add_argument("-c", "--confidence", type=float, default=0.4,
     help="minimum probability to filter weak detections")
 ap.add_argument("-s", "--skip-frames", type=int, default=30,
     help="# of skip frames between detections")
+ap.add_argument("-oc", "--output-csv", type=str,
+    help="path to optional output csv file")
 ap.add_argument("-op", "--output-plots", type=str,
     help="path to optional output plot files")
 args = vars(ap.parse_args())
@@ -390,10 +390,8 @@ outVsTime = px.line(df, x = 'timestamp', y = 'totalOut', title='totalIn Against 
 crowd = px.line(df, x = 'timestamp', y = 'crowdInsight', title='totalIn Against timestamp')
 # crowd.show()
 
-if args.get("output_plots", False):
-
-    if args.get("input", False):
-        crowd.write_image(args["output_plots"] + "_crowd.jpeg")
-        inVsTime.write_image(args["output_plots"] + "_in_vs_time.jpeg")
-        outVsTime.write_image(args["output_plots"] + "_out_vs_time.jpeg")
-        print("[INFO] successfully exported plots")
+if args.get("output_plots", False) and args.get("input", False):
+    crowd.write_image(args["output_plots"] + "_crowd.jpeg")
+    inVsTime.write_image(args["output_plots"] + "_in_vs_time.jpeg")
+    outVsTime.write_image(args["output_plots"] + "_out_vs_time.jpeg")
+    print("[INFO] successfully exported plots")
