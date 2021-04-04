@@ -2,8 +2,8 @@ import PySimpleGUI as sg
 import os.path
 import traceback
 
-DEFAULT_INPUT_FOLDER = "videos"
-DEFAULT_OUTPUT_FOLDER = "output"
+DEFAULT_INPUT_FOLDER = os.path.join(os.getcwd(), "videos")
+DEFAULT_OUTPUT_FOLDER = os.path.join(os.getcwd(), "output")
 input_path = DEFAULT_INPUT_FOLDER
 output_folder = DEFAULT_OUTPUT_FOLDER
 output_path_name = ""
