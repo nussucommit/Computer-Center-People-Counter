@@ -384,10 +384,10 @@ if args.get("output_csv", False):
 inVsTime = px.line(df, x = 'timestamp', y = 'totalIn', title='totalIn Against timestamp')
 # inVsTime.show()
 
-outVsTime = px.line(df, x = 'timestamp', y = 'totalOut', title='totalIn Against timestamp')
+outVsTime = px.line(df, x = 'timestamp', y = 'totalOut', title='totalOut Against timestamp')
 # outVsTime.show()
 
-crowd = px.line(df, x = 'timestamp', y = 'crowdInsight', title='totalIn Against timestamp')
+crowd = px.line(df, x = 'timestamp', y = 'crowdInsight', title='corwdInsight Against timestamp')
 # crowd.show()
 
 if args.get("output_plots", False) and args.get("input", False):
