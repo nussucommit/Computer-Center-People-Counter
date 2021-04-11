@@ -374,6 +374,11 @@ if args.get("output_csv", False):
         "totalIn": down_counts,
         "crowdInsight": crowdInsight
     })
+    
+    # record only first row and subsequent rows with change in values
+    df[['d_in', 'd_out', 'd_crowd']] = df[['totalOut', 'totalIn', 'crowdInsight']].diff()
+    df = df[(df['d_in'] != 0) | (df['d_out'] != 0) | (df['d_crowd'] != 0)]
+    df.drop(['d_in', 'd_out', 'd_crowd'], axis=1, inplace=True)
 
     df.to_csv(args["output_csv"], index=False)
 
